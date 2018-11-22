@@ -6,9 +6,10 @@ def word_similarity(word, text, metric = 'distance'):
     wordnet_set = wn.synsets(word)
     if len(wordnet_set) == 0:
         #print('Warning: word {} has not match in wordnet'.format(word))
-        return 0
+        return 0, False
     word_wn= wordnet_set[0] #in the meantime we consider the first match
     best_match = ''
+    ok = False
     for t in text:
         wordnet_set = wn.synsets(t)
         if len(wordnet_set) == 0:
@@ -21,20 +22,30 @@ def word_similarity(word, text, metric = 'distance'):
                 if sim != None  and sim > max_sim:
                     max_sim = sim
                     best_match = t
+                    ok = True
         except ValueError:
             pass
     #print('Best similarity for word {} is {} and score {:.4f}'.format(word, best_match, max_sim))
-    return max_sim
+    return max_sim, ok
 
 def text_similarity(text_1, text_2):
     text_1 = nltk.word_tokenize(text_1)
     text_2 = nltk.word_tokenize(text_2)
+    text_1 = list(set(text_1))
+    text_2 = list(set(text_2))
     score = 0 
+    cnt = 0
     for t in text_1:
-        score += word_similarity(t, text_2)
+        score_w, ok = word_similarity(t, text_2)
+        if ok:
+            score += score_w
+            cnt += 1
     for t in text_2:
-        score += word_similarity(t, text_1)
-    return score
+        score_w, ok = word_similarity(t, text_1)
+        if ok:
+            score += score_w
+            cnt += 1
+    return score/cnt
 
 def read_file(path):
     text = open(path)
