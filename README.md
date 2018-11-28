@@ -10,9 +10,9 @@ This method is tested for authomatic fake detection.
 * nltk
 * [sematch](https://github.com/gsi-upm/sematch)
 
-In case you want to test news in portuguese you will need package `dict`.
+In case you want to test news in portuguese you will need package `dict`. Code was tested under a LINUX setup.
 
-## Run demo
+## Run demo:
 
 ```bash
 git clone https://github.com/RQuispeC/fake-news.git
