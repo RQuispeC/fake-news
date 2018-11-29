@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(description='Parameters for semantic similarity
 parser.add_argument('-n', '--news', type=str, help="path for archive of evaluated news")
 parser.add_argument('-r', '--reference', type=str, help="path for archive of reference news")
 parser.add_argument('-t', '--threshold', type=float, default = 0.35, help="threshold used to determinated is news is fake or not")
-parser.add_argument('-w', '--weight', type=float, default = 0.5, help="weigth used for DBpedia similarity score over WordNet similarity")
+parser.add_argument('-w', '--weight', type=float, default = 0.5, help="weigth used for YAGO similarity score over WordNet similarity")
 parser.add_argument('-s', '--similarity', default='path', type=str, choices=['path', 'lin', 'lch'], help="similarity metric used, default 'path'")
 parser.add_argument('--translate', action='store_true', help="Whether or not to translate input data")
 parser.add_argument('--debug', action='store_true', help="Print debug messages")
