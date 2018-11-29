@@ -41,11 +41,9 @@ def get_dbpedia_id(type_dict):
     if not 'lod' in type_dict:
         return None
     for item in type_dict['lod']:
-        #if item.find('dbpedia.org/ontology/') >= 0:
-        if item.find('dbpedia.org/class/yago/') >= 0:
+        if item.find('dbpedia.org/ontology/') >= 0:
             return item
     return None
-
 
 def get_yago_id(type_dict):
     if not 'lod' in type_dict:
@@ -67,9 +65,9 @@ def word_similarity(word_list, text_list):
     """
 
     max_sim_wordnet = 0
-    max_sim_dbpedia = 0
+    max_sim_yago = 0
     ok_wordnet = False
-    ok_dbpedia = False
+    ok_yago = False
     for word in word_list:
         if not is_ascii(word):
             continue
@@ -78,7 +76,7 @@ def word_similarity(word_list, text_list):
             continue
 
         type_word = type_word[0]#use only fist match
-        w_dbpedia_id = get_dbpedia_id(type_word)
+        w_yago_id = get_yago_id(type_word)
 
         for l in text_list:
             for other in l:
@@ -88,25 +86,25 @@ def word_similarity(word_list, text_list):
                         max_sim_wordnet = sim
                         ok_wordnet = True
 
-                    if w_dbpedia_id == None:
+                    if w_yago_id == None:
                         continue
                     type_word = matcher.type_links(other)
                     if len(type_word) == 0: #there is not match for other in knowledge graph
                         continue
 
                     type_word = type_word[0]#use only fist match
-                    o_dbpedia_id = get_dbpedia_id(type_word)
-                    if o_dbpedia_id == None:
+                    o_yago_id = get_yago_id(type_word)
+                    if o_yago_id == None:
                         continue
-                    #sim = concept.similarity(w_dbpedia_id, o_dbpedia_id, args.similarity)
-                    sim = yago_sim.yago_similarity(w_dbpedia_id, o_dbpedia_id, args.similarity)
-                    if sim and sim > max_sim_dbpedia:
-                        max_sim_dbpedia = sim
-                        ok_dbpedia = True
+                    #sim = concept.similarity(w_yago_id, o_yago_id, args.similarity)
+                    sim = yago_sim.yago_similarity(w_yago_id, o_yago_id, args.similarity)
+                    if sim and sim > max_sim_yago:
+                        max_sim_yago = sim
+                        ok_yago = True
 
                 except ValueError:
                     pass
-    return max_sim_wordnet, max_sim_dbpedia, ok_wordnet, ok_dbpedia
+    return max_sim_wordnet, max_sim_yago, ok_wordnet, ok_yago
 
 def text_similarity(text_1, text_2):
     #tokenize, get unique words and clean data.
@@ -124,50 +122,50 @@ def text_similarity(text_1, text_2):
         text_2 = [[word] for word in text_2] #convert in an list of list
 
     score_wordnet = 0
-    score_dbpedia = 0 
+    score_yago = 0 
     cnt_wordnet = 0
-    cnt_dbpedia = 0
+    cnt_yago = 0
     if args.debug:
         print(len(text_1),len(text_2))
     for xx, t in enumerate(text_1):
         if args.debug:
             print('-->', xx, t)
-        score_wordnet_r, score_dbpedia_r, ok_wordnet, ok_dbpedia = word_similarity(t, text_2)
+        score_wordnet_r, score_yago_r, ok_wordnet, ok_yago = word_similarity(t, text_2)
         if ok_wordnet:
             if args.debug:
                 print("++", cnt_wordnet)
             score_wordnet += score_wordnet_r
             cnt_wordnet += 1
-        if ok_dbpedia:
+        if ok_yago:
             if args.debug:
-                print("--", cnt_dbpedia)
-            score_dbpedia += score_dbpedia_r
-            cnt_dbpedia += 1
+                print("--", cnt_yago)
+            score_yago += score_yago_r
+            cnt_yago += 1
     if args.debug:
         print("Done with text 1")
 
     for xx, t in enumerate(text_2):
         if args.debug:
             print('-->', xx, t)
-        score_wordnet_r, score_dbpedia_r, ok_wordnet, ok_dbpedia = word_similarity(t, text_1)
+        score_wordnet_r, score_yago_r, ok_wordnet, ok_yago = word_similarity(t, text_1)
         if ok_wordnet:
             if args.debug:
                 print("++", cnt_wordnet)
             score_wordnet += score_wordnet_r
             cnt_wordnet += 1
-        if ok_dbpedia:
+        if ok_yago:
             if args.debug:
-                print("--", cnt_dbpedia)
-            score_dbpedia += score_dbpedia_r
-            cnt_dbpedia += 1
+                print("--", cnt_yago)
+            score_yago += score_yago_r
+            cnt_yago += 1
     if args.debug:
         print("Done with text 2")
 
     if cnt_wordnet != 0:
         score_wordnet /= cnt_wordnet
-    if cnt_dbpedia != 0:
-        score_dbpedia /= cnt_dbpedia
-    return score_wordnet, score_dbpedia
+    if cnt_yago != 0:
+        score_yago /= cnt_yago
+    return score_wordnet, score_yago
 
 def read_file(path):
     text = open(path)
@@ -181,8 +179,8 @@ def main():
     reference = read_file(args.reference)
     threshold = args.threshold
 
-    score_wordnet, score_dbpedia = text_similarity(news, reference)
-    score = score_dbpedia*args.weight + (1. - args.weight)*score_wordnet
+    score_wordnet, score_yago = text_similarity(news, reference)
+    score = score_yago*args.weight + (1. - args.weight)*score_wordnet
     print("======================================================= ")
     print("===FAKE NEWS DETECTION BASED ON SEMANTIC SIMILARITY==== ")
     print("======================================================= ")
@@ -191,9 +189,9 @@ def main():
     print("REFERENCE============================================== ")
     print(reference)
     print("======================================================= ")
-    print("Similarity Score DBpedia: {:.4f}".format(score_dbpedia))
+    print("Similarity Score YAGO: {:.4f}".format(score_yago))
     print("Similarity Score WordNet: {:.4f}".format(score_wordnet))
-    print("Similarity Score: {:.4f}*{:.2f} + {:.4f}*{:.2f} = {:.4f}".format(score_dbpedia, args.weight,score_wordnet, 1. - args.weight, score))
+    print("Similarity Score: {:.4f}*{:.2f} + {:.4f}*{:.2f} = {:.4f}".format(score_yago, args.weight,score_wordnet, 1. - args.weight, score))
     print("News {} fake!".format("is" if score < threshold else "is not"))
 if __name__ == '__main__':
    main()
