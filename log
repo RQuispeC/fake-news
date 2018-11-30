@@ -1,0 +1,64 @@
+>>>>>>>>>>>>>>>>>>>>>> CASE 1 #01>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>> ENGLISH >>>>>>>>>>>>>>>>>>>>>>>>>>
+python text_similarity.py -n data/true_01_en.txt -r data/check_01_long_en.txt -t 0.36 -w 0.7
+Similarity Score YAGO: 0.3215
+Similarity Score WordNet: 0.4596
+Similarity Score: 0.3215*0.70 + 0.4596*0.30 = 0.3629
+News is not fake!
+
+python text_similarity.py -n data/fake_01_en.txt -r data/check_01_long_en.txt -t 0.36 -w 0.7
+Similarity Score YAGO: 0.2891
+Similarity Score WordNet: 0.4298
+Similarity Score: 0.2891*0.70 + 0.4298*0.30 = 0.3313
+News is fake!
+>>>>>>>>>>>>>>>>>>>>>> PORTUGUESE >>>>>>>>>>>>>>>>>>>>>>>
+python text_similarity.py -n data/true_01_por.txt -r data/check_01_long_por.txt -t 0.55 -w 0.7 --translate
+Similarity Score YAGO: 0.5453
+Similarity Score WordNet: 0.6287
+Similarity Score: 0.5453*0.70 + 0.6287*0.30 = 0.5703
+News is not fake!
+
+python text_similarity.py -n data/fake_01_por.txt -r data/check_01_long_por.txt -t 0.55 -w 0.7 --translate
+Similarity Score YAGO: 0.4832
+Similarity Score WordNet: 0.6132
+Similarity Score: 0.4832*0.70 + 0.6132*0.30 = 0.5222
+News is fake!
+>>>>>>>>>>>>>>>>>>>>>> CASE 2 #71>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>> ENGLISH >>>>>>>>>>>>>>>>>>>>>>>>>>
+python text_similarity.py -n data/true_02_en.txt -r data/check_02_long_en.txt -t 0.36 -w 0.7
+Similarity Score YAGO: 0.5720
+Similarity Score WordNet: 0.6680
+Similarity Score: 0.5720*0.70 + 0.6680*0.30 = 0.6008
+News is not fake!
+
+python text_similarity.py -n data/fake_02_en.txt -r data/check_02_long_en.txt -t 0.36 -w 0.7
+Similarity Score YAGO: 0.3275
+Similarity Score WordNet: 0.4140
+Similarity Score: 0.3275*0.70 + 0.4140*0.30 = 0.3534
+News is fake!
+>>>>>>>>>>>>>>>>>>>>>> PORTUGUESE >>>>>>>>>>>>>>>>>>>>>>>
+python text_similarity.py -n data/true_02_por.txt -r data/check_02_long_por.txt -t 0.55 -w 0.7 --translate
+Similarity Score YAGO: 0.6799
+Similarity Score WordNet: 0.7583
+Similarity Score: 0.6799*0.70 + 0.7583*0.30 = 0.7034
+News is not fake!
+
+python text_similarity.py -n data/fake_02_por.txt -r data/check_02_long_por.txt -t 0.55 -w 0.7 --translate
+Similarity Score YAGO: 0.5747
+Similarity Score WordNet: 0.6341
+Similarity Score: 0.5747*0.70 + 0.6341*0.30 = 0.5926
+News is not fake!
+
+>>>>>>>>>>>>>>>>>> SUPER HARD >>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>> ENGLISH >>>>>>>>>>>>>>>>>>>>>>>>>>
+python text_similarity.py -n data/text_00_en.txt -r data/text_01_en.txt -t 0.36 -w 0.7
+Similarity Score YAGO: 0.0729
+Similarity Score WordNet: 0.1643
+Similarity Score: 0.0729*0.70 + 0.1643*0.30 = 0.1003
+News is fake!
+>>>>>>>>>>>>>>>>>>>> PORTUGUESE >>>>>>>>>>>>>>>>>>>>>>>>>
+python text_similarity.py -n data/text_00_por.txt -r data/text_01_por.txt -t 0.55 -w 0.7 --translate
+Similarity Score YAGO: 0.2485
+Similarity Score WordNet: 0.2990
+Similarity Score: 0.2485*0.70 + 0.2990*0.30 = 0.2637
+News is fake!
