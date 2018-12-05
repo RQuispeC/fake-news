@@ -2,7 +2,7 @@
 
 This repo implements a semantic similarity method using YAGO, DBpedia and WordNet.
 
-This method is tested for authomatic fake detection.
+This method is tested for authomatic fake news detection.
 
 ## Prerequisites:
 
